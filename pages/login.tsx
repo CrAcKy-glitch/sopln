@@ -3,6 +3,7 @@ import { ClientSafeProvider, signIn, useSession } from "next-auth/react";
 
 import { getProviders } from "next-auth/react";
 import { useRouter } from "next/router";
+import Loader from "@app/components/loading";
 
 interface LoginProps {
   providers: Record<string, ClientSafeProvider>;
@@ -12,7 +13,7 @@ export default function Login({ providers }: LoginProps) {
   const { data, status } = useSession();
   const router = useRouter();
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
   if (data) {
     router.push("/home");
