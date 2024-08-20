@@ -19,7 +19,7 @@ export default function Login({ providers }: LoginProps) {
     router.push("/home");
   }
   if (!providers) {
-    return <div>Loading...</div>;
+    return <div>Loading providers</div>;
   }
 
   return (
