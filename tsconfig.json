@@ -16,6 +16,6 @@
       "@app/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/login.tsx", "pages/api/auth/[...nextauth].js", "pages/api/[username]", "babel.config.js"],
   "exclude": ["node_modules"]
 }
