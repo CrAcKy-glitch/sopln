@@ -33,10 +33,7 @@ export function PostForm({
 
   return (
     <>
-      <form
-        onSubmit={handlePostSumbit}
-        className="border-b-twitterBorder border-b-2 w-full py-2 px-2"
-      >
+      <form onSubmit={handlePostSumbit} className="w-full py-2 px-2">
         <div className="flex space-x-1">
           <div className="">
             <Avatar
@@ -59,7 +56,7 @@ export function PostForm({
                 ></textarea>
                 <div className="text-right">
                   <button className="bg-twitterBlue rounded-full px-3 py-2 ">
-                    Tweet
+                    Shoot
                   </button>
                 </div>
               </div>
@@ -76,7 +73,7 @@ export function PostForm({
                 ></textarea>
                 <div className="text-right">
                   <button className="bg-twitterBlue rounded-full px-3 py-2 ">
-                    Tweet
+                    Shoot
                   </button>
                 </div>
               </div>

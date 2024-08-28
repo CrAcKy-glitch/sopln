@@ -5,6 +5,7 @@ import UsernameForm from "@app/components/userNameForm";
 import useUserInfo from "@app/hooks/useUserInfo";
 import axios from "axios";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -48,10 +49,17 @@ export function Home() {
   }
   return (
     <Layout>
-      <h1 className="text-xl font-bold px-2">Home</h1>
-      <PostForm onPost={getPosts} placeholder={"What's Happening"} />
+      <h1 className="py-4">
+        <Image
+          src={"/sopln.jpeg"}
+          alt="logo"
+          width={150}
+          height={150}
+          className="rounded-xl"
+        />
+      </h1>
+      <PostForm onPost={getPosts} placeholder={"Shoot Your Question Here"} />
       <div className="all-posts">
-        <div className="font-extrabold py-1">All Post</div>
         <PostContent posts={posts} likes={likes} commentsCount={0} />
       </div>
       <div className="justify-center flex py-2">

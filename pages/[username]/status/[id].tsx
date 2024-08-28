@@ -41,7 +41,7 @@ export default function PostPage() {
     <Layout>
       {post?._id ? (
         <div className="py-5">
-          <TrailBack text="Tweet" />
+          <TrailBack text="Shoot" />
 
           <PostContent
             posts={[post]}
@@ -53,7 +53,7 @@ export default function PostPage() {
           {!!userInfo && (
             <div className="border-t border-twitterBorder">
               <PostForm
-                placeholder={"Tweet Your Reply"}
+                placeholder={"Shoot something back"}
                 compact="reply"
                 reply={{ parent: id }}
                 onPost={fetchPost}

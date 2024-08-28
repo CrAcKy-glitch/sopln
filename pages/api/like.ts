@@ -22,6 +22,7 @@ export default async function handle(
 
   if (existingLike) {
     await Like.deleteOne({ author: userId, post: id });
+
     await Post.updateOne({ _id: id }, { $inc: { likesCount: -1 } });
 
     return res.json({ message: "Like removed", likesCount: -1 });

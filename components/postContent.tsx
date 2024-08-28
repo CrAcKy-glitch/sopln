@@ -18,13 +18,13 @@ export default function PostContent({
   big = false,
 }: PostContentProps) {
   return (
-    <div className="flex min-w-full ">
+    <div className="flex min-w-full p-1">
       {posts.length ? (
-        <div className="grow">
+        <div className="grow space-y-2">
           {posts.map((post, key) => (
             <div
               key={key}
-              className="border-b border-b-twitterLightGray py-4 px-2 w-full"
+              className="border-b border-b-twitterLightGray py-4 px-2 w-full bg-twitterBorder rounded-xl"
             >
               <Link
                 href={`/${post.author?.username}/status/${post._id}`}
