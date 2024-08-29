@@ -21,20 +21,21 @@ export default async function handle(
   const existingLike = await Like.findOne({ author: userId, post: id });
 
   if (existingLike) {
-    await Like.deleteOne({ author: userId, post: id });
-
-    await Post.updateOne({ _id: id }, { $inc: { likesCount: -1 } });
+    const deletion = await Like.deleteOne({ author: userId, post: id });
+    if (deletion)
+      await Post.updateOne({ _id: id }, { $inc: { likesCount: -1 } });
 
     return res.json({ message: "Like removed", likesCount: -1 });
   } else {
-    await Like.create({ author: userId, post: id });
-
-    await Post.updateOne(
-      { _id: id },
-      {
-        $inc: { likesCount: +1 },
-      }
-    );
+    const creation = await Like.create({ author: userId, post: id });
+    if (creation) {
+      await Post.updateOne(
+        { _id: id },
+        {
+          $inc: { likesCount: +1 },
+        }
+      );
+    }
 
     return res.json({ message: "Post liked", likesCount: 1 });
   }

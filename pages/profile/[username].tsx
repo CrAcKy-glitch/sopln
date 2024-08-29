@@ -43,7 +43,6 @@ export default function Profile() {
         fetch: true,
       })
       .then((response) => {
-        console.log("hi");
         response.data ? setIsFollowing(true) : setIsFollowing(false);
       });
   }
@@ -69,9 +68,6 @@ export default function Profile() {
         location: prev.location,
       };
     });
-
-    console.log(JSON.stringify(user));
-    console.log(JSON.stringify(userInfo));
   }
   async function follow() {
     setIsFollowing(!isFollowing);
@@ -107,36 +103,30 @@ export default function Profile() {
             handler={userInfo?._id === user?._id}
             backgroundImageSrc={String(user?.cover)}
           />
-
-          <Avatar
-            image={String(user?.image)}
-            alt={user?.name}
-            width={120}
-            height={120}
-            profile={true}
-            className="rounded-full -mt-16"
-          />
+          <div className="rounded-full p-3 bg-black">
+            <Avatar
+              image={String(user?.image)}
+              alt={user?.name}
+              width={120}
+              height={120}
+              profile={true}
+              className="rounded-full -mt-16"
+            />
+          </div>
         </div>
         <div className="flex flex-row justify-between items-start ">
           <div className="flex-col py-2 px-3">
             {isEditMode ? (
               <input
                 type="text"
-                value={user?.name}
+                value={user?.name || ""}
                 onChange={(e) => {
+                  const newName = e.target.value;
                   setUser((prev) => {
                     if (!prev) return null;
-
                     return {
                       ...prev,
-                      bio: prev.bio,
-                      name: user?.name || prev.name,
-                      _id: prev._id,
-                      email: prev.email,
-                      image: prev.image,
-                      username: prev.username,
-                      cover: prev.cover,
-                      location: prev.location,
+                      name: newName,
                     };
                   });
                 }}
@@ -150,19 +140,12 @@ export default function Profile() {
               <textarea
                 value={user?.bio}
                 onChange={(e) => {
+                  const newBio = e.target.value;
                   setUser((prev) => {
                     if (!prev) return null;
-
                     return {
                       ...prev,
-                      bio: user?.bio || prev.bio,
-                      name: prev.name,
-                      _id: prev._id,
-                      email: prev.email,
-                      image: prev.image,
-                      username: prev.username,
-                      cover: prev.cover,
-                      location: prev.location,
+                      bio: newBio,
                     };
                   });
                 }}

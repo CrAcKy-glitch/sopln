@@ -4,6 +4,7 @@ import TimeAgo from "timeago-react";
 import Avatar from "./avatar";
 import PostButton from "./postButtons";
 import { likeInterface } from "@app/lib/models/like";
+import Image from "next/image";
 
 interface PostContentProps {
   posts: PostInterface[];
@@ -56,9 +57,33 @@ export default function PostContent({
                     </div>
                   </div>
                   {big ? (
-                    <div className="font-bold p-1">{post.text}</div>
+                    <div className="font-bold p-1">
+                      {post.image ? (
+                        <Image
+                          src={post.image}
+                          width={250}
+                          height={250}
+                          alt={post.author.name}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      {post.text}
+                    </div>
                   ) : (
-                    <div className="mt-2 p-2">{post.text}</div>
+                    <div className="mt-2 p-2">
+                      {post.image ? (
+                        <Image
+                          src={post.image}
+                          width={250}
+                          height={250}
+                          alt={post.author.name}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      {post.text}
+                    </div>
                   )}
                 </div>
               </Link>
