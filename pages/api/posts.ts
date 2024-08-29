@@ -70,7 +70,7 @@ export default async function handler(
       const result = await Post.create({
         author: user,
         parent: reply.parent,
-        image: reply.image,
+        image,
         username: user?.username,
         likesCount: defaultLikesCount,
         commentsCount: defaultCommentsCount,

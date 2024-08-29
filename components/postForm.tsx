@@ -7,7 +7,6 @@ import Upload from "./upload";
 export function PostForm({
   onPost,
   placeholder,
-  compact,
   reply,
 }: {
   reply?: object;
@@ -27,9 +26,10 @@ export function PostForm({
     await axios.post("/api/posts", payload);
     setText("");
     setImage("");
+
     onPost();
   }
-  function getImage(imageUrl: string) {
+  function getImage(imageUrl: string, reset: Function) {
     setImage(imageUrl);
   }
 
