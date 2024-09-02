@@ -6,8 +6,8 @@ export interface followInterface {
 }
 
 const follow = {
-  author: Object,
-  destination: Object,
+  author: String,
+  destination: String,
 };
 
 const FollowSchema = new Schema(follow, { timestamps: true });

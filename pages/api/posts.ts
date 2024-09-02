@@ -71,7 +71,7 @@ export default async function handler(
         author: user,
         parent: reply.parent,
         image,
-        username: user?.username,
+        "author.username": user?.username,
         likesCount: defaultLikesCount,
         commentsCount: defaultCommentsCount,
         text,

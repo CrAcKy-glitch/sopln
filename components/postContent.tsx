@@ -5,19 +5,23 @@ import Avatar from "./avatar";
 import PostButton from "./postButtons";
 import { likeInterface } from "@app/lib/models/like";
 import Image from "next/image";
+import useUserInfo from "@app/hooks/useUserInfo";
 
 interface PostContentProps {
   posts: PostInterface[];
   big?: boolean;
   likes: likeInterface[];
   commentsCount: number;
+  clipBoardPopup: Function;
 }
 
 export default function PostContent({
   posts,
   likes,
   big = false,
+  clipBoardPopup,
 }: PostContentProps) {
+  const { userInfo } = useUserInfo();
   return (
     <div className="flex min-w-full p-1">
       {posts.length ? (
@@ -87,10 +91,13 @@ export default function PostContent({
                   )}
                 </div>
               </Link>
+
               <PostButton
                 id={post._id}
                 likesDefault={post.likesCount}
                 likedByMeDefault={likes.some((like) => like.post === post._id)}
+                clipBoard={`${post.author?.username}/status/${post._id}`}
+                initiateClipBoard={clipBoardPopup}
                 comments={post.commentsCount}
               />
             </div>

@@ -42,13 +42,6 @@ export default function Avatar({
     <>
       <Link href={`${!profile ? `/profile/${username}` : "/image"}`}>
         {pImage != "loading" ? (
-          // <Image
-          //   src={pImage}
-          //   alt={alt}
-          //   className={className || "rounded-full"}
-          //   width={width || 40}
-          //   height={height || 40}
-          // />
           <EditableImage
             nextImageHeight={height || 40}
             nextImageWidth={width || 40}

@@ -40,23 +40,20 @@ export default function EditableImage({
     if (files && files.length <= 1) {
       const file = files[0];
       const data = new FormData();
-      data.append("cover", file);
-      if (type === "COVER") {
-        await fetch("/api/upload", {
-          method: "POST",
-          body: data,
-        }).then((response) => {
-          if (!response.ok) {
-            return <div>there was an error uploading this file</div>;
-          } else {
-            onChange();
-          }
-        });
-      }
+      data.append(type, file);
+      data.append("type", type);
 
-      if (type === "AVATAR") {
-        console.log("AIR BENDER");
-      }
+      await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      }).then((response) => {
+        if (!response.ok) {
+          return <div>there was an error uploading this file</div>;
+        } else {
+          onChange();
+        }
+      });
+
       setIsUploading(false);
     }
   }

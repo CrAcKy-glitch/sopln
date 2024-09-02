@@ -11,7 +11,12 @@ export default async function handle(
   await initMongoose();
   const session = await getServerSession(req, res, authOptions);
 
-  const { targetUser, fetch } = req.body;
+  const { targetUser, fetch, selfUser } = req.body;
+
+  if (selfUser) {
+    const count = await Follow.countDocuments({ destination: selfUser });
+    return res.json({ count });
+  }
 
   if (targetUser && !fetch) {
     const existingFollow = await Follow.findOne({

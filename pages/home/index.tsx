@@ -1,25 +1,34 @@
+import { DeveloperNotes } from "@app/components/developerNotes";
 import Layout from "@app/components/layout";
 import PostContent from "@app/components/postContent";
 import { PostForm } from "@app/components/postForm";
+import { RightLayout } from "@app/components/rightLayout";
 import UsernameForm from "@app/components/userNameForm";
 import useUserInfo from "@app/hooks/useUserInfo";
 import axios from "axios";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { ClipBoardPopup } from "@app/components/copiedToClipboard";
 import React, { useEffect, useState } from "react";
+import { useClipBoardPopup } from "@app/hooks/useClipBoard";
 
 export function Home() {
   const { status, userInfo, setUserInfo } = useUserInfo();
   const [posts, setPosts] = useState<any>([]);
   const [likes, setLikes] = useState<any>([]);
-  const router = useRouter();
+  const { clipBoardPopup, setClipBoardPopup } = useClipBoardPopup();
+
   async function getPosts() {
-    const posts = await axios.get("/api/posts").then((posts) => {
-      setPosts(posts.data.allPosts);
-      setLikes(posts.data.findLike);
-    });
+    try {
+      const response = await axios.get("/api/posts");
+      setPosts(response.data.allPosts);
+      setLikes(response.data.findLike);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
   }
+
   async function logout() {
     if (userInfo?._id) {
       setUserInfo(null);
@@ -32,45 +41,50 @@ export function Home() {
   }, []);
 
   if (status === "loading") {
-    return (
-      <>
-        <div>Loading User Info</div>
-      </>
-    );
+    return <div>Loading User Info</div>;
   }
+
   if (!userInfo?.username) {
-    return (
-      <>
-        <div>
-          <UsernameForm />
-        </div>
-      </>
-    );
+    return <UsernameForm />;
   }
+
   return (
-    <Layout>
-      <h1 className="py-4">
-        <Image
-          src={"/sopln.jpeg"}
-          alt="logo"
-          width={150}
-          height={150}
-          className="rounded-xl"
-        />
-      </h1>
-      <PostForm onPost={getPosts} placeholder={"Shoot Your Question Here"} />
-      <div className="all-posts">
-        <PostContent posts={posts} likes={likes} commentsCount={0} />
+    <div className="flex flex-row left-0">
+      <RightLayout>
+        <DeveloperNotes />
+      </RightLayout>
+      <Layout>
+        <h1 className="py-4">
+          <Image
+            src={"/sopln.jpeg"}
+            alt="logo"
+            width={150}
+            height={150}
+            className="rounded-xl"
+          />
+        </h1>
+        <PostForm onPost={getPosts} placeholder={"Shoot Your Question Here"} />
+        <div className="all-posts">
+          <PostContent
+            posts={posts}
+            likes={likes}
+            commentsCount={0}
+            clipBoardPopup={setClipBoardPopup}
+          />
+        </div>
+        <div className="justify-center flex py-2">
+          <button
+            className="bg-twitterWhite text-black px-5 py-2 rounded"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </div>
+      </Layout>
+      <div className={clipBoardPopup ? "visible" : "invisible"}>
+        <ClipBoardPopup />
       </div>
-      <div className="justify-center flex py-2">
-        <button
-          className="bg-twitterWhite text-black px-5 py-2 rounded"
-          onClick={logout}
-        >
-          Logout
-        </button>
-      </div>
-    </Layout>
+    </div>
   );
 }
 

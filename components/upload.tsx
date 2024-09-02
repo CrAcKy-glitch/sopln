@@ -33,9 +33,9 @@ export default function Upload({
       const result = await response.json();
       if (response.ok) {
         setImage(result.upload.location);
-        onUploadFinish(result.upload.location);
+        onUploadFinish(result.upload.location, setImage);
       } else {
-        console.error("Error uploading image:", result.message);
+        throw new Error("there was an error uploading this file");
       }
     }
   }

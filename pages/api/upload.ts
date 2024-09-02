@@ -20,16 +20,24 @@ export default async function handle(
     const type = fields.type[0];
     const fileInfo = files[type][0];
     let fileName = "";
-    if (type === "COVER" || type === "AVATAR") {
+    if (type === "COVER") {
       fileName = session?.user.id as string;
+    }
+    if (type === "AVATAR") {
+      fileName = (session?.user.id + "avatar") as string;
     }
     if (type === "POST") {
       fileName = Math.random().toString(36).substring(7);
     }
     const upload = await Bucket({ fileinfo: fileInfo, key: fileName });
-    if (type === "COVER" || type == "AVATAR") {
+    if (type === "COVER") {
       const user = await User.findByIdAndUpdate(session?.user?.id, {
         cover: upload.location,
+      });
+    }
+    if (type === "AVATAR") {
+      const user = await User.findByIdAndUpdate(session?.user?.id, {
+        image: upload.location,
       });
     }
     res.json({ files, upload });

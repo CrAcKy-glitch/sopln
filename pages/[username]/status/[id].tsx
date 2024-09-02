@@ -29,7 +29,7 @@ export default function PostPage() {
       setReplies(repliesResponse.data.replies || []);
       setReplyLikes(repliesResponse.data.likes || []);
     } catch (error) {
-      console.error("Error fetching post data:", error);
+      throw new Error("Function not implemented.");
     }
   }
 
@@ -48,6 +48,7 @@ export default function PostPage() {
             likes={likes || []}
             commentsCount={0}
             big={true}
+            clipBoardPopup={() => {}}
           />
 
           {!!userInfo && (
@@ -63,6 +64,7 @@ export default function PostPage() {
                   commentsCount={0}
                   posts={replies}
                   likes={replylikes}
+                  clipBoardPopup={() => {}}
                 />
               </div>
             </div>
