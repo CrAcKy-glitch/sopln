@@ -47,8 +47,8 @@ export default function Login({ providers }: LoginProps) {
                   }}
                   className="bg-twitterWhite text-black font-bold py-2 px-4 rounded flex items-center"
                 >
-                  <Image
-                    src={"/" + provider.name + ".png"}
+                  <img
+                    src={"./" + provider.name + ".png"}
                     alt=""
                     className=""
                     width={60}
