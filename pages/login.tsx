@@ -26,7 +26,7 @@ export default function Login({ providers }: LoginProps) {
   return (
     <>
       <div className="flex flex-col sm:flex-row justify-center items-center">
-        <div className="rounded mx-6">
+        <div className="rounded mx-6 my-5 md:my-0">
           <Image
             src={"/sopln.jpeg"}
             alt="logo"
@@ -47,13 +47,23 @@ export default function Login({ providers }: LoginProps) {
                   }}
                   className="bg-twitterWhite text-black font-bold py-2 px-4 rounded flex items-center"
                 >
-                  <img
-                    src={"./" + provider.name + ".png"}
-                    alt=""
-                    className=""
-                    width={60}
-                    height={30}
-                  />
+                  {provider.name == "Google" ? (
+                    <Image
+                      src={"/google.png"}
+                      alt=""
+                      className=""
+                      width={60}
+                      height={30}
+                    />
+                  ) : (
+                    <Image
+                      src={"/github.png"}
+                      alt=""
+                      className=""
+                      width={60}
+                      height={30}
+                    />
+                  )}
                   Sign in with {provider.name}
                 </button>
               </div>
