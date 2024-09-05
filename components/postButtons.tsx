@@ -54,9 +54,9 @@ export default function PostButton({
   const [commentCount, setCommentCount] = useState(defaultComments);
 
   async function toggleLike() {
+    setLikedByMe(!likedByMe);
     const response = await axios.post("/api/like", { id });
     if (response.data) {
-      setLikedByMe(!likedByMe);
       setLikesCount((value) => (likedByMe ? value - 1 : value + 1));
     }
   }
