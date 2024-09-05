@@ -12,6 +12,7 @@ export interface PostInterface {
   likesCount: number;
   commentsCount: number;
   parent?: string;
+  image?: string;
 }
 
 const PostDesign = {
@@ -20,6 +21,7 @@ const PostDesign = {
   likesCount: Number,
   commentsCount: Number,
   parent: String,
+  image: String,
 };
 
 const PostSchema = new Schema(PostDesign, { timestamps: true });

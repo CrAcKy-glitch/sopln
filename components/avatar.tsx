@@ -2,6 +2,7 @@ import useUserInfo from "@app/hooks/useUserInfo";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import EditableImage from "./editableImage";
 
 interface AvatarInterface {
   image: any;
@@ -11,6 +12,7 @@ interface AvatarInterface {
   height?: number;
   username?: string;
   profile?: boolean;
+  editable?: boolean;
 }
 
 export default function Avatar({
@@ -21,6 +23,7 @@ export default function Avatar({
   className,
   username,
   profile,
+  editable,
 }: AvatarInterface) {
   const [pImage, setImage] = useState("loading");
   const { userInfo } = useUserInfo();
@@ -39,12 +42,18 @@ export default function Avatar({
     <>
       <Link href={`${!profile ? `/profile/${username}` : "/image"}`}>
         {pImage != "loading" ? (
-          <Image
-            src={pImage}
-            alt={alt}
-            className={className || "rounded-full"}
-            width={width || 40}
-            height={height || 40}
+          <EditableImage
+            nextImageHeight={height || 40}
+            nextImageWidth={width || 40}
+            backgroundImageSrc={pImage}
+            owner={true}
+            className={className}
+            type={"AVATAR"}
+            onChange={() => {
+              {
+              }
+            }}
+            imageClassName={"rounded-full"}
           />
         ) : (
           <></>

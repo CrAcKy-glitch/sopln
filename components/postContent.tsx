@@ -4,27 +4,32 @@ import TimeAgo from "timeago-react";
 import Avatar from "./avatar";
 import PostButton from "./postButtons";
 import { likeInterface } from "@app/lib/models/like";
+import Image from "next/image";
+import useUserInfo from "@app/hooks/useUserInfo";
 
 interface PostContentProps {
   posts: PostInterface[];
   big?: boolean;
   likes: likeInterface[];
   commentsCount: number;
+  clipBoardPopup: Function;
 }
 
 export default function PostContent({
   posts,
   likes,
   big = false,
+  clipBoardPopup,
 }: PostContentProps) {
+  const { userInfo } = useUserInfo();
   return (
-    <div className="flex min-w-full ">
+    <div className="flex min-w-full p-1">
       {posts.length ? (
-        <div className="grow">
+        <div className="grow space-y-2">
           {posts.map((post, key) => (
             <div
               key={key}
-              className="border-b border-b-twitterLightGray py-4 px-2 w-full"
+              className="border-b border-b-twitterLightGray py-4 px-2 w-full bg-twitterBorder rounded-xl"
             >
               <Link
                 href={`/${post.author?.username}/status/${post._id}`}
@@ -56,16 +61,43 @@ export default function PostContent({
                     </div>
                   </div>
                   {big ? (
-                    <div className="font-bold p-1">{post.text}</div>
+                    <div className="font-bold p-1">
+                      {post.image ? (
+                        <Image
+                          src={post.image}
+                          width={250}
+                          height={250}
+                          alt={post.author.name}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      {post.text}
+                    </div>
                   ) : (
-                    <div className="mt-2 p-2">{post.text}</div>
+                    <div className="mt-2 p-2">
+                      {post.image ? (
+                        <Image
+                          src={post.image}
+                          width={250}
+                          height={250}
+                          alt={post.author.name}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      {post.text}
+                    </div>
                   )}
                 </div>
               </Link>
+
               <PostButton
                 id={post._id}
                 likesDefault={post.likesCount}
                 likedByMeDefault={likes.some((like) => like.post === post._id)}
+                clipBoard={`${post.author?.username}/status/${post._id}`}
+                initiateClipBoard={clipBoardPopup}
                 comments={post.commentsCount}
               />
             </div>

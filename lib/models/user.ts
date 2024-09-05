@@ -21,7 +21,7 @@ const UserDesign = {
   location: String,
 };
 
-const UserSchema = new Schema(UserDesign);
+const UserSchema = new Schema(UserDesign, { timestamps: true });
 
 const User = models?.User || model("User", UserSchema);
 

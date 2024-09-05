@@ -29,7 +29,7 @@ export default function PostPage() {
       setReplies(repliesResponse.data.replies || []);
       setReplyLikes(repliesResponse.data.likes || []);
     } catch (error) {
-      console.error("Error fetching post data:", error);
+      throw new Error("Function not implemented.");
     }
   }
 
@@ -41,19 +41,20 @@ export default function PostPage() {
     <Layout>
       {post?._id ? (
         <div className="py-5">
-          <TrailBack text="Tweet" />
+          <TrailBack text="Shoot" />
 
           <PostContent
             posts={[post]}
             likes={likes || []}
             commentsCount={0}
             big={true}
+            clipBoardPopup={() => {}}
           />
 
           {!!userInfo && (
             <div className="border-t border-twitterBorder">
               <PostForm
-                placeholder={"Tweet Your Reply"}
+                placeholder={"Shoot something back"}
                 compact="reply"
                 reply={{ parent: id }}
                 onPost={fetchPost}
@@ -63,6 +64,7 @@ export default function PostPage() {
                   commentsCount={0}
                   posts={replies}
                   likes={replylikes}
+                  clipBoardPopup={() => {}}
                 />
               </div>
             </div>

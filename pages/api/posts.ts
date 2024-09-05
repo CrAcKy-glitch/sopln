@@ -65,11 +65,13 @@ export default async function handler(
   if (req.method == "POST") {
     const defaultLikesCount = 0,
       defaultCommentsCount = 0;
-    const { reply, text } = req.body;
+    const { reply, text, image } = req.body;
     if (reply) {
       const result = await Post.create({
         author: user,
         parent: reply.parent,
+        image,
+        "author.username": user?.username,
         likesCount: defaultLikesCount,
         commentsCount: defaultCommentsCount,
         text,
@@ -89,6 +91,7 @@ export default async function handler(
       author: user,
       "author.username": username?.username,
       text,
+      image,
       commentsCount: defaultCommentsCount,
       likesCount: defaultLikesCount,
     });
