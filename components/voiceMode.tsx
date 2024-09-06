@@ -36,14 +36,16 @@ export default function VoiceMode() {
       ) : (
         <div>
           {voiceRoomData ? (
-            voiceRoomData.map((voiceRoom) => (
-              <VoiceRoom
-                _id={voiceRoom._id}
-                name={voiceRoom.name}
-                about={voiceRoom.about}
-                tags={voiceRoom.tags}
-                moderator={voiceRoom.moderator}
-              />
+            voiceRoomData.map((voiceRoom, key) => (
+              <div key={key}>
+                <VoiceRoom
+                  _id={voiceRoom._id}
+                  name={voiceRoom.name}
+                  about={voiceRoom.about}
+                  tags={voiceRoom.tags}
+                  moderator={voiceRoom.moderator}
+                />
+              </div>
             ))
           ) : (
             <div className="text-white">Nothing to Display</div>

@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"ts-node webSocket/socketServer.ts\"",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
+  "dev": "concurrently \"next dev\" \"ts-node webSocket/socketServer.ts\"",
+  "build": "next build",
+  "start": "concurrently \"next start\" \"ts-node webSocket/socketServer.ts\"",
+  "lint": "next lint"
+},
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
     "@auth/mongodb-adapter": "^3.4.2",
