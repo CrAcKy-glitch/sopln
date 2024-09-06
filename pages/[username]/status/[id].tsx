@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { likeInterface } from "@app/lib/models/like";
 import Loader from "@app/components/loading";
-import useUserInfo from "@app/hooks/useUserInfo";
+import useUserInfo from "@app/contexts/useUserInfo";
 import { PostForm } from "@app/components/postForm";
 import TrailBack from "@app/components/trailBack";
 

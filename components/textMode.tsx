@@ -4,13 +4,13 @@ import PostContent from "@app/components/postContent";
 import { PostForm } from "@app/components/postForm";
 import { RightLayout } from "@app/components/rightLayout";
 import UsernameForm from "@app/components/userNameForm";
-import useUserInfo from "@app/hooks/useUserInfo";
+import useUserInfo from "@app/contexts/useUserInfo";
 import axios from "axios";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { ClipBoardPopup } from "@app/components/copiedToClipboard";
 import React, { useEffect, useState } from "react";
-import { useClipBoardPopup } from "@app/hooks/useClipBoard";
+import { useClipBoardPopup } from "@app/contexts/useClipBoard";
 
 export function TextMode() {
   const { status, userInfo, setUserInfo } = useUserInfo();

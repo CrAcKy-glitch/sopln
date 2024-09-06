@@ -1,4 +1,4 @@
-import useUserInfo from "@app/hooks/useUserInfo";
+import useUserInfo from "@app/contexts/useUserInfo";
 import axios from "axios";
 import { useState } from "react";
 import Avatar from "./avatar";

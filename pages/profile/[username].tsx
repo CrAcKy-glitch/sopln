@@ -4,7 +4,7 @@ import Layout from "@app/components/layout";
 import Loader from "@app/components/loading";
 import PostContent from "@app/components/postContent";
 import TrailBack from "@app/components/trailBack";
-import useUserInfo from "@app/hooks/useUserInfo";
+import useUserInfo from "@app/contexts/useUserInfo";
 import { likeInterface } from "@app/lib/models/like";
 import { PostInterface } from "@app/lib/models/post";
 import { Users } from "@app/lib/models/user";

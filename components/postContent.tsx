@@ -5,7 +5,7 @@ import Avatar from "./avatar";
 import PostButton from "./postButtons";
 import { likeInterface } from "@app/lib/models/like";
 import Image from "next/image";
-import useUserInfo from "@app/hooks/useUserInfo";
+import useUserInfo from "@app/contexts/useUserInfo";
 
 interface PostContentProps {
   posts: PostInterface[];

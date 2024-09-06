@@ -1,4 +1,4 @@
-import useUserInfo from "@app/hooks/useUserInfo";
+import useUserInfo from "@app/contexts/useUserInfo";
 import { getServerSession } from "next-auth";
 import { useRouter } from "next/router";
 import Loader from "./loading";

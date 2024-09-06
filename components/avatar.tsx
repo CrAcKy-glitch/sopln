@@ -1,4 +1,4 @@
-import useUserInfo from "@app/hooks/useUserInfo";
+import useUserInfo from "@app/contexts/useUserInfo";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
