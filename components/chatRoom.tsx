@@ -1,38 +1,80 @@
 import React, { useState, useEffect } from "react";
 import { Button, Typography, Avatar, Tooltip } from "antd";
 import { CloseOutlined, PhoneOutlined } from "@ant-design/icons";
-import "antd/dist/reset.css"; // Ensure Ant Design styles are imported
+import io from "socket.io-client";
 
 const { Title, Text } = Typography;
 
+let socket: any;
+
 interface VoiceChatRoomProps {
   roomName: string;
+  userName: string;
   onLeave: () => void;
 }
 
-const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({ roomName, onLeave }) => {
+const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({
+  roomName,
+  userName,
+  onLeave,
+}) => {
   const [participants, setParticipants] = useState<string[]>([]);
+  const audioContextRef = React.useRef<AudioContext | null>(null);
+  const sourceNodeRef = React.useRef<MediaStreamAudioSourceNode | null>(null);
+  const bufferRef = React.useRef<MediaStreamAudioSourceNode | null>(null);
 
   useEffect(() => {
-    // Simulate participants joining and leaving
-    const simulateParticipants = () => {
-      // Example participants
-      setParticipants(["Alice", "Bob", "Charlie"]);
+    socket = io("http://localhost:3001");
 
-      // Simulate participant updates every 5 seconds
-      const intervalId = setInterval(() => {
-        setParticipants((prevParticipants) => {
-          const newParticipant = `User${Math.floor(Math.random() * 100)}`;
-          return [...prevParticipants, newParticipant].slice(0, 5); // Limit to 5 participants for demo
-        });
-      }, 5000);
+    socket.emit("join-room", roomName, userName);
 
-      // Cleanup interval on component unmount
-      return () => clearInterval(intervalId);
+    socket.on("participants-update", (updatedParticipants: string[]) => {
+      setParticipants(updatedParticipants);
+    });
+
+    socket.on("receive-voice", (voiceData: ArrayBuffer) => {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new AudioContext();
+      }
+
+      const audioBlob = new Blob([voiceData], { type: "audio/webm" });
+      const audioURL = URL.createObjectURL(audioBlob);
+      const audioElement = new Audio(audioURL);
+
+      audioElement.addEventListener("canplaythrough", () => {
+        audioElement
+          .play()
+          .catch((error) => console.error("Audio playback error:", error));
+      });
+
+      // Clean up the object URL after playback
+      audioElement.onended = () => {
+        URL.revokeObjectURL(audioURL);
+      };
+    });
+
+    return () => {
+      socket.emit("leave-room", roomName, userName);
+      socket.disconnect();
     };
+  }, [roomName, userName]);
 
-    simulateParticipants();
-  }, []);
+  const handleStartSpeaking = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          socket.emit("voice-data", roomName, event.data);
+        }
+      };
+
+      mediaRecorder.start(100); // Adjust the interval as needed
+    } catch (error) {
+      console.error("Error accessing microphone:", error);
+    }
+  };
 
   const handleRemoveParticipant = (participant: string) => {
     setParticipants((prevParticipants) =>
@@ -74,6 +116,7 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({ roomName, onLeave }) => {
                     shape="circle"
                     icon={<PhoneOutlined />}
                     className="bg-green-500 hover:bg-green-600"
+                    onClick={handleStartSpeaking}
                   />
                 </Tooltip>
                 <Button
@@ -96,6 +139,7 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({ roomName, onLeave }) => {
           type="primary"
           className="bg-blue-600 hover:bg-blue-700 text-white"
           size="large"
+          onClick={handleStartSpeaking}
         >
           Start Speaking
         </Button>

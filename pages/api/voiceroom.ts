@@ -22,6 +22,12 @@ export default async function handle(
     }
   }
   if (req.method === "GET") {
+    const { id } = req.body;
+    if (id) {
+      const response = await VoiceRoom.findById(id);
+      return res.json(response);
+    }
+
     const response = await VoiceRoom.find({ status: true });
     return res.json(response);
   }
