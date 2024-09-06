@@ -1,89 +1,49 @@
-import { DeveloperNotes } from "@app/components/developerNotes";
-import Layout from "@app/components/layout";
-import PostContent from "@app/components/postContent";
-import { PostForm } from "@app/components/postForm";
-import { RightLayout } from "@app/components/rightLayout";
-import UsernameForm from "@app/components/userNameForm";
-import useUserInfo from "@app/hooks/useUserInfo";
-import axios from "axios";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { ClipBoardPopup } from "@app/components/copiedToClipboard";
 import React, { useEffect, useState } from "react";
-import { useClipBoardPopup } from "@app/hooks/useClipBoard";
+import TextMode from "@app/components/textMode";
+import Image from "next/image";
+import VoiceMode from "@app/components/voiceMode";
 
 export function Home() {
-  const { status, userInfo, setUserInfo } = useUserInfo();
-  const [posts, setPosts] = useState<any>([]);
-  const [likes, setLikes] = useState<any>([]);
-  const { clipBoardPopup, setClipBoardPopup } = useClipBoardPopup();
+  const [showTextPosts, setShowTextPosts] = useState<boolean>(true);
+  const [showVoiceRoom, setShowVoiceRoom] = useState<boolean>(false);
 
-  async function getPosts() {
-    try {
-      const response = await axios.get("/api/posts");
-      setPosts(response.data.allPosts);
-      setLikes(response.data.findLike);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
+  function toggleSelect() {
+    if (showTextPosts) {
+      setShowVoiceRoom(true);
+      setShowTextPosts(false);
+      return;
+    } else {
+      setShowTextPosts(!showTextPosts);
+      setShowVoiceRoom(!showVoiceRoom);
+      return;
     }
   }
-
-  async function logout() {
-    if (userInfo?._id) {
-      setUserInfo(null);
-      await signOut();
-    }
-  }
-
-  useEffect(() => {
-    getPosts();
-  }, []);
-
-  if (status === "loading") {
-    return <div>Loading User Info</div>;
-  }
-
-  if (!userInfo?.username) {
-    return <UsernameForm />;
-  }
-
   return (
-    <div className="flex flex-row left-0">
-      <RightLayout>
-        <DeveloperNotes />
-      </RightLayout>
-      <Layout>
-        <h1 className="py-4">
-          <Image
-            src={"/sopln.jpeg"}
-            alt="logo"
-            width={150}
-            height={150}
-            className="rounded-xl"
-          />
-        </h1>
-        <PostForm onPost={getPosts} placeholder={"Shoot Your Question Here"} />
-        <div className="all-posts">
-          <PostContent
-            posts={posts}
-            likes={likes}
-            commentsCount={0}
-            clipBoardPopup={setClipBoardPopup}
-          />
-        </div>
-        <div className="justify-center flex py-2">
-          <button
-            className="bg-twitterWhite text-black px-5 py-2 rounded"
-            onClick={logout}
-          >
-            Logout
-          </button>
-        </div>
-      </Layout>
-      <div className={clipBoardPopup ? "visible" : "invisible"}>
-        <ClipBoardPopup />
+    <div>
+      <div className="m-2">
+        <Image
+          src={"/sopln.jpeg"}
+          alt="logo"
+          width={150}
+          height={150}
+          className="rounded-xl"
+        />
       </div>
+      <div className="flex-row flex space-x-3 justify-center">
+        <button
+          className={showTextPosts ? `rounded bg-twitterLightGray w-10` : ""}
+          onClick={toggleSelect}
+        >
+          Text
+        </button>
+        <button
+          className={showVoiceRoom ? `rounded bg-twitterLightGray w-20` : ""}
+          onClick={toggleSelect}
+        >
+          Voice Area
+        </button>
+      </div>
+      {showTextPosts ? <TextMode /> : <VoiceMode />}{" "}
     </div>
   );
 }
