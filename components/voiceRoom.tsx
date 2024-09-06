@@ -5,7 +5,7 @@ import Avatar from "./avatar";
 import io from "socket.io-client";
 import { Users } from "@app/lib/models/user";
 
-const socket = io("http://localhost:3001");
+const socket = io(process.env.NEXT_PUBLIC_SOCKET as string);
 
 export default function VoiceRoom({
   _id,

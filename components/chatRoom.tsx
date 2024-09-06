@@ -24,7 +24,7 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({
   const bufferRef = React.useRef<MediaStreamAudioSourceNode | null>(null);
 
   useEffect(() => {
-    socket = io("http://localhost:3001");
+    socket = io(process.env.NEXT_PUBLIC_SOCKET as string);
 
     socket.emit("join-room", roomName, userName);
 
