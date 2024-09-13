@@ -11,9 +11,29 @@ export default async function handle(
 ) {
   await initMongoose();
   const session = await getServerSession(req, res, authOptions);
+  if (req.method == "PUT") {
+    const { roomName } = req.body;
+    if (roomName) {
+      const room = await VoiceRoom.findById(roomName);
+      if (room) {
+        room.status = false;
+        await room.save();
+        return res.json("deleted");
+      }
+    }
+  }
   if (req.method === "POST") {
-    const { name, about, tags } = req.body;
-
+    const { name, about, tags, roomName } = req.body;
+    if (roomName) {
+      const owner = await VoiceRoom.find({
+        _id: roomName,
+        "moderator.id": session?.user.id,
+      });
+      if (owner.length > 0) {
+        return res.json(true);
+      }
+      return res.json(false);
+    }
     if (name && about && tags) {
       const moderator = await User.findById(session?.user.id);
       const status = true;

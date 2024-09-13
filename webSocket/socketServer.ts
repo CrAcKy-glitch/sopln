@@ -21,23 +21,23 @@ io.on("connection", (socket: any) => {
     socket.to(roomId).emit("signal", signalData);
   });
 
-  socket.on("join-room", (roomName: string, userName: string) => {
-    socket.join(roomName);
+  socket.on("join-room", (roomId: string, userName: string) => {
+    socket.join(roomId);
 
-    if (!rooms[roomName]) rooms[roomName] = [];
-    rooms[roomName].push(userName);
+    if (!rooms[roomId]) rooms[roomId] = [];
+    rooms[roomId].push(userName);
 
-    io.to(roomName).emit("participants-update", rooms[roomName]);
-    console.log(`${userName} joined ${roomName}`);
+    io.to(roomId).emit("participants-update", rooms[roomId]);
+    console.log(`${userName} joined ${roomId}`);
   });
 
-  socket.on("leave-room", (roomName: string, userName: string) => {
-    socket.leave(roomName);
+  socket.on("leave-room", (roomId: string, userName: string) => {
+    socket.leave(roomId);
 
-    if (rooms[roomName]) {
-      rooms[roomName] = rooms[roomName].filter((name) => name !== userName);
-      io.to(roomName).emit("participants-update", rooms[roomName]);
-      console.log(`${userName} left ${roomName}`);
+    if (rooms[roomId]) {
+      rooms[roomId] = rooms[roomId].filter((name) => name !== userName);
+      io.to(roomId).emit("participants-update", rooms[roomId]);
+      console.log(`${userName} left ${roomId}`);
     }
   });
 
@@ -45,8 +45,8 @@ io.on("connection", (socket: any) => {
     console.log("User disconnected");
   });
 
-  socket.on("voice-data", (roomName: string, voiceData: Blob) => {
-    socket.broadcast.to(roomName).emit("receive-voice", voiceData);
+  socket.on("voice-data", (roomId: string, voiceData: Blob) => {
+    socket.broadcast.to(roomId).emit("receive-voice", voiceData);
   });
 });
 

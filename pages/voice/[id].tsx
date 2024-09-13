@@ -36,7 +36,7 @@ export default function VoiceChat() {
     <>
       {roomData && userInfo?.name && (
         <VoiceChatRoom
-          roomName={roomData?._id || "Room"}
+          roomName={id}
           userName={userInfo?.name}
           onLeave={handleLeave}
         />

@@ -34,7 +34,7 @@ export default function VoiceMode() {
       {!voiceRoomVisible ? (
         <VoiceRoomForm />
       ) : (
-        <div>
+        <>
           {voiceRoomData ? (
             voiceRoomData.map((voiceRoom, key) => (
               <div key={key}>
@@ -58,7 +58,7 @@ export default function VoiceMode() {
               Create Room
             </button>
           </div>
-        </div>
+        </>
       )}
     </VoiceLayout>
   );

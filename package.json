@@ -1,11 +1,12 @@
+
 {
   "name": "sopln",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "concurrently \"next dev\" \"ts-node webSocket/socketServer.ts\"",
+  "dev":"next dev",
   "build": "next build",
-  "start": "concurrently \"next start\" \"ts-node webSocket/socketServer.ts\"",
+  "start": "next start",
   "lint": "next lint"
 },
   "dependencies": {

@@ -14,7 +14,7 @@ export interface VoiceRoomInterface {
 const VoiceRoomDesign = {
   name: String,
   participants: Array,
-  moderator: Object,
+  moderator: String,
   status: Boolean,
   tags: Array,
 };

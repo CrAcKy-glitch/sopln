@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Button, Typography, Avatar, Tooltip } from "antd";
 import { CloseOutlined, PhoneOutlined } from "@ant-design/icons";
 import io from "socket.io-client";
+import axios from "axios";
+import useUserInfo from "@app/contexts/useUserInfo";
+import { useRouter } from "next/router";
 
 const { Title, Text } = Typography;
 
@@ -20,10 +23,23 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({
 }) => {
   const [participants, setParticipants] = useState<string[]>([]);
   const audioContextRef = React.useRef<AudioContext | null>(null);
+  const router = useRouter();
+  const { userInfo } = useUserInfo();
+  const [roomOwner, setRoomOwner] = useState<boolean>(false);
   const sourceNodeRef = React.useRef<MediaStreamAudioSourceNode | null>(null);
   const bufferRef = React.useRef<MediaStreamAudioSourceNode | null>(null);
-
+  async function fetchUserOwner() {
+    await axios.post("/api/voiceroom", { roomName }).then((response) => {
+      setRoomOwner(response.data);
+    });
+  }
+  async function fetchEndCall() {
+    await axios.put("/api/voiceroom", { roomName }).then((response) => {
+      response.data === "deleted" ? router.back() : "an error happened";
+    });
+  }
   useEffect(() => {
+    fetchUserOwner();
     socket = io(process.env.NEXT_PUBLIC_SOCKET as string);
 
     socket.emit("join-room", roomName, userName);
@@ -47,7 +63,6 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({
           .catch((error) => console.error("Audio playback error:", error));
       });
 
-      // Clean up the object URL after playback
       audioElement.onended = () => {
         URL.revokeObjectURL(audioURL);
       };
@@ -70,7 +85,7 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({
         }
       };
 
-      mediaRecorder.start(100); // Adjust the interval as needed
+      mediaRecorder.start(250);
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -134,7 +149,7 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({
         )}
       </div>
 
-      <div className="flex justify-center mt-6">
+      <div className="flex flex-row justify-center mt-6 space-x-2">
         <Button
           type="primary"
           className="bg-blue-600 hover:bg-blue-700 text-white"
@@ -143,6 +158,15 @@ const VoiceChatRoom: React.FC<VoiceChatRoomProps> = ({
         >
           Start Speaking
         </Button>
+        {!roomOwner && (
+          <Button
+            className="bg-red-600 border-none text-white"
+            size="large"
+            onClick={fetchEndCall}
+          >
+            End Call
+          </Button>
+        )}
       </div>
     </div>
   );
