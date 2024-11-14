@@ -13,6 +13,10 @@ module.exports = {
         protocol: "https",
         hostname: "sopln-media-collection.s3.amazonaws.com",
       },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
   webpack: (config) => {
